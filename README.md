@@ -77,10 +77,14 @@ another is called AppleSilicon_version.py, this is for training on M1/M1PRO/M1MA
 
 You don't have to install all packages as exact the same version as I listed, try to run the code first, see if there is any error that related to package version.  
 
+> [Due to SimpleRNN cannot use cuda cores](https://www.tensorflow.org/guide/keras/rnn#performance_optimization_and_cudnn_kernels), it may take hours to train a model
+
 - Colab/Windows
   - numpy==1.18.5
   - tensorflow==2.8.2
   - pandas==1.4.2
+
+> Due to [some unknown bugs](https://github.com/tensorflow/tensorflow/issues/56082) and incompatible features in tensorflow, I changed some code to make it working on a Apple silicon
 
 - Apple Silicon
   - numpy==1.21.6
@@ -105,6 +109,7 @@ After we have a dataset, we need to think about what kind of neural network is m
 Is that it? However, there is one failure case, a long straight equal-width racetrack. From the LiDAR data only, you can only know whether the car is moving or not in horizontal direction, but you don't know the speed in vertical direction (along the racetrack). But you still know the car is going forward, why? Because your finger tells you that I am holding the trigger right now, the car should have speed. Hence, we need another input data for neural network: current car speed and steering angle. Note that the real speed and steering angle is different from driving command.   
 
 Now, I need to think about how to glue different layers together to maximize the performance. There are a lot of models in RNN family, such as SimpleRNN, LSTM, GRU, Transformer. LSTM and GRU is designed for remembering elements at the beginning of a very long sequence. When you try to overtake the opponent, you won't remember LiDAR data from 10 seconds ago, because they are useless for current decision making. So, I use the SimpleRNN as one of the layers.   
-For rest of layers, I took a inspiration from natural language process, a Dense layer as [Embedding layer](https://www.youtube.com/watch?v=OuNH5kT-aD0) before the SimpleRNN layer. This Dense layer will filter useless information in LiDAR data, and reinforce important information, such as too close to the racetrack, the position of the component, etc. After the SimpleRNN layer, there are 4 Dense layers as final decision making, making decision by a fusion of output of SimpleRNN and real car speed and steering angle.  
+For rest of layers, I took a inspiration from natural language process, added a Dense layer as [Embedding layer](https://www.youtube.com/watch?v=OuNH5kT-aD0) before the SimpleRNN layer. This Dense layer will filter useless information in LiDAR data, and reinforce important information, such as too close to the racetrack, the position of the component, etc. After the SimpleRNN layer, there are 4 Dense layers as final decision making, making decision by a fusion of the SimpleRNN output and real car speed and steering angle.  
+
 
 You can select a fairly easy racetrack first, and test your model on same racetrack to see whether the model has good performance or not
