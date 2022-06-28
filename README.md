@@ -111,5 +111,13 @@ Is that it? However, there is one failure case, a long straight equal-width race
 Now, I need to think about how to glue different layers together to maximize the performance. There are a lot of models in RNN family, such as SimpleRNN, LSTM, GRU, Transformer. LSTM and GRU is designed for remembering elements at the beginning of a very long sequence. When you try to overtake the opponent, you won't remember LiDAR data from 10 seconds ago, because they are useless for current decision making. So, I use the SimpleRNN as one of the layers.   
 For rest of layers, I took a inspiration from natural language process, added a Dense layer as [Embedding layer](https://www.youtube.com/watch?v=OuNH5kT-aD0) before the SimpleRNN layer. This Dense layer will filter useless information in LiDAR data, and reinforce important information, such as too close to the racetrack, the position of the component, etc. After the SimpleRNN layer, there are 4 Dense layers as final decision making, making decision by a fusion of the SimpleRNN output and real car speed and steering angle.  
 
+Finally, have a look at the structure   
+<img src="https://user-images.githubusercontent.com/6621970/176226712-c1320830-9047-4ebf-9452-025f5a5d0466.jpeg" width="500" height="700">
 
-You can select a fairly easy racetrack first, and test your model on same racetrack to see whether the model has good performance or not
+
+### Fine-tuning parameters
+
+
+You can change number of nodes in each layer, and their activation function, as well as the loss function. It may take a while to find a good one that can perform very well on all dataset. You can select a fairly easy racetrack first, like Australia dataset, and create dozens of models, and test them on the same racetrack to see whether the model has good performance or not. Next, you can use a more difficult racetrack, like Shanghai dataset, some of models probably cannot drive well on that, then pick out good ones. And using a easier racetrack again, this is to avoid overfitting problem, one easy racetrack, one hard racetrack. In the end, maybe only very few models can pass all datasets, testing and evaluating them on racetracks that never seen before.  
+I put some very good models on the simulator repository, welcome to have a try!
+
