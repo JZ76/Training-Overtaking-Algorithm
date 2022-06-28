@@ -14,7 +14,7 @@ Please feel free to raise topics in Issues section, I will try my best to answer
 ### How to create this?
 
 
-> Assuming the simulator is running well on your computer
+> Assuming the simulator is running well on your computer, and familiar with the basic usages first
 
 **Make sure the parameters of vehicle model won't be changed during creating dataset!!!**
 
@@ -26,7 +26,7 @@ I implemented a feature that if you press a key on keyboard or a button on contr
 4. You can change initial position of two cars in simulator.cpp file    
 5. When start recording, the leading vehicle must shown up in ego vehicle's LiDAR, you should see a little square in the simulator. And better start recording with both car is moving rather than static. You should stop recording data when finish overtaking i.e. you cannot see the leading vehicle in LiDAR   
 6. During recording, make sure there is no collision with either racetrack or car. If there is collision, you can press Ctrl+C to kill the simulator, so the data won't be saved, or you can save the data and delete them in folder. It would be easier if you sort your dataset in added time order, the last three files always the latest csv files.
-7. Try to overtake with different strategies, like sometimes overtake from left side, sometimes from right side.
+7. Try to overtake with different strategies, sometimes overtake from left side, sometimes from right side.
 
 ### Dataset Info
 
@@ -72,7 +72,8 @@ ML_dataset_blueXXXX
 ### Environment
 
 
-As you can see, there are two files in this repo, one is called Colab_version.ipynb, this is for training on Colab or on Windows machine, another is called AppleSilicon_version.py, this is for training on M1/M1PRO/M1MAX/M1Ultra machine (probably works on M2/M2PRO?/M2MAX?/M2Ultra? machine).   
+As you can see, there are two files in this repo, one is called Colab_version.ipynb, this is for training on Colab or on Windows machine,   
+another is called AppleSilicon_version.py, this is for training on M1/M1PRO/M1MAX/M1Ultra machine (probably works on M2/M2PRO?/M2MAX?/M2Ultra? machine).   
 
 You don't have to install all packages as exact the same version as I listed, try to run the code first, see if there is any error that related to package version.  
 
@@ -87,14 +88,23 @@ You don't have to install all packages as exact the same version as I listed, tr
   - pandas==1.4.2
 
 
-### Model Design Principles
+### Overtaking Algorithm Design Principles (my appoarch)
 
 
-We aim at developing a model that can overtake an opponent car, the dataset should include overtaking maneuvers in different scenario, i.e. different overtaking strategies in different racetracks. 
+First of all, the dataset should include overtaking maneuvers in different scenario, i.e. different overtaking strategies in different racetracks. The way of creating models is called *imitation learning* , i.e. a machine learning model will try to copy behaviour from a dataset. Hence, the quality of a dataset determines the performance of a model. 
 
-
-There are two hypothesis:   
+There are three hypothesis:   
 - the leading vehicle will use minimum time trajectory
+- the max speed of leading vehicle is lower than the ego vehicle
 - the leading vehicle cannot defence overtaking, because the LiDAR sensor has 270° field of view rather than 360°, the car doesn't know what happened in the back
+
+These three hyothesis define boundary of the problem, the leading car playing their best but the top speed is lower than the overtaking car, so that the overtaking car can have opportunities to overtake, and [the competition rules](https://icra2022-race.f1tenth.org/rules.html) said penalty will be applied if upon crashing the opponent.  
+
+After we have a dataset, we need to think about what kind of neural network is more suitable and how do we feed data into the neural network. Since this is imitation learning, we can start thinking by how do we drive a F1tenth car. Imagine you are sitting in front of screen, stare at the car in the simulator, hold a Xbox controller, if this is the first time you drive it, you will build a mapping relationship in your brain which from joystick and trigger to the movement of the car. Usually you will have a good understanding of how to drive well after few attempts. But how did you know the movement of the car? The only way is through LiDAR data, if the LiDAR pattern rotated fast, means the car is rotating fast; if the LiDAR pattern went back fast, means the car is going forward fast. Here, I said we actually combined LiDAR data from past few timestamps together **implicitly**, it is impossible to know the movement of the car from just one LiDAR data. This is the reason why Dense model doesn't work well, and this is where **Recurrent Neural Network** kicks in. RNN is very suitable for process sequence data, such as language, sounds, video. Although it seems like I should use computer vision algorithm because this is how we process it, numerical data here is more precise than image data.  
+
+Is that it? However, there is one failure case, a long straight equal-width racetrack. From the LiDAR data only, you can only know whether the car is moving or not in horizontal direction, but you don't know the speed in vertical direction (along the racetrack). But you still know the car is going forward, why? Because your finger tells you that I am holding the trigger right now, the car should have speed. Hence, we need another input data for neural network: current car speed and steering angle. Note that the real speed and steering angle is different from driving command.   
+
+Now, I need to think about how to glue different layers together to maximize the performance. There are a lot of models in RNN family, such as SimpleRNN, LSTM, GRU, Transformer. LSTM and GRU is designed for remembering elements at the beginning of a very long sequence. When you try to overtake the opponent, you won't remember LiDAR data from 10 seconds ago, because they are useless for current decision making. So, I use the SimpleRNN as one of the layers.   
+For rest of layers, I took a inspiration from natural language process, a Dense layer as [Embedding layer](https://www.youtube.com/watch?v=OuNH5kT-aD0) before the SimpleRNN layer. This Dense layer will filter useless information in LiDAR data, and reinforce important information, such as too close to the racetrack, the position of the component, etc. After the SimpleRNN layer, there are 4 Dense layers as final decision making, making decision by a fusion of output of SimpleRNN and real car speed and steering angle.  
 
 You can select a fairly easy racetrack first, and test your model on same racetrack to see whether the model has good performance or not
