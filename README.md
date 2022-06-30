@@ -122,9 +122,25 @@ You can change number of nodes in each layer, and their activation function, as 
 I put some very good models on the simulator repository, welcome to have a try!
 
 
-## Results
+## Results (these racetracks are not in the training dataset)
 
 
 ## Self-driving
 
-![Screen Recording 2022-06-29 at 19 01 18](https://user-images.githubusercontent.com/6621970/176650297-b79a29ad-6761-4cb6-a407-32057aa2afbd.gif)
+
+![Screen Recording 2022-06-29 at 19 01 18 2](https://user-images.githubusercontent.com/6621970/176650707-4c99e84f-39ce-4f33-bf10-d1f0119ba28c.gif)
+
+
+## Overtaking
+
+
+![Screen Recording 2022-06-30 at 11 43 32](https://user-images.githubusercontent.com/6621970/176659102-7a56f1a0-d849-4b13-9b5c-ddbde6702443.gif)
+
+
+## Following
+
+
+![Screen Recording 2022-06-30 at 11 15 37](https://user-images.githubusercontent.com/6621970/176659173-0bedccf9-b67d-4744-97b6-b2b426f37d4e.gif)
+
+
+## Static obstacle avoiding![Screen Recording 2022-06-30 at 11 55 51](https://user-images.githubusercontent.com/6621970/176660843-ec40cb38-78bb-4308-abd4-b1289012397d.gif)
