@@ -121,3 +121,10 @@ Finally, have a look at the structure
 You can change number of nodes in each layer, and their activation function, as well as the loss function. It may take a while to find a good one that can perform very well on all dataset. You can select a fairly easy racetrack first, like Australia dataset, and create dozens of models, and test them on the same racetrack to see whether the model has good performance or not. Next, you can use a more difficult racetrack, like Shanghai dataset, some of models probably cannot drive well on that, then pick out good ones. And using a easier racetrack again, this is to avoid overfitting problem, one easy racetrack, one hard racetrack. In the end, maybe only very few models can pass all datasets, testing and evaluating them on racetracks that never seen before.  
 I put some very good models on the simulator repository, welcome to have a try!
 
+
+## Results
+
+
+## Self-driving
+
+![Screen Recording 2022-06-29 at 19 01 18](https://user-images.githubusercontent.com/6621970/176650297-b79a29ad-6761-4cb6-a407-32057aa2afbd.gif)
