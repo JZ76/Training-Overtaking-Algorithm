@@ -143,4 +143,7 @@ I put some very good models on the simulator repository, welcome to have a try!
 ![Screen Recording 2022-06-30 at 11 15 37](https://user-images.githubusercontent.com/6621970/176659173-0bedccf9-b67d-4744-97b6-b2b426f37d4e.gif)
 
 
-## Static obstacle avoiding![Screen Recording 2022-06-30 at 11 55 51](https://user-images.githubusercontent.com/6621970/176660843-ec40cb38-78bb-4308-abd4-b1289012397d.gif)
+## Static obstacle avoiding
+
+
+![Screen Recording 2022-06-30 at 11 55 51](https://user-images.githubusercontent.com/6621970/176660843-ec40cb38-78bb-4308-abd4-b1289012397d.gif)
