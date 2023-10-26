@@ -7,7 +7,18 @@
 
 Please feel free to raise topics in Issues section, I will try my best to answer them!
 
+## Citation
 
+    @INPROCEEDINGS{10275226,
+    author={Zhang, Jiancheng and Loidl, Hans–Wolfgang},
+    booktitle={2023 28th International Conference on Automation and Computing (ICAC)}, 
+    title={F1TENTH: An Over-taking Algorithm Using Machine Learning}, 
+    year={2023},
+    volume={},
+    number={},
+    pages={01-06},
+    doi={10.1109/ICAC57885.2023.10275226}}
+    
 ## Datasets
 
 
@@ -147,3 +158,5 @@ I put some very good models on the simulator repository, welcome to have a try!
 
 
 ![Screen Recording 2022-06-30 at 11 55 51](https://user-images.githubusercontent.com/6621970/176660843-ec40cb38-78bb-4308-abd4-b1289012397d.gif)
+
+
