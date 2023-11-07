@@ -1,7 +1,7 @@
 # F1TENTH: An Over-taking Algorithm Using Machine Learning
 
 
-> This repository is part of the paper ***"[F1TENTH](https://f1tenth.org/index.html): An Over-taking Algorithm Using Machine Learning"***  
+> This repository is part of the paper ***"[F1TENTH: An Over-taking Algorithm Using Machine Learning](https://ieeexplore.ieee.org/document/10275226)"***  
 > The model, in the simulator repository, can be only used in the simulator, because not test on a real car yet.   
 > If you want to apply this overtaking algorithm to a real F1tenth car, you have to minimize the gap between real car and simulated car first, then collecting some data and training a new model. More detail can be found below and wiki page in the simulator repository. Be prepared for facing a lot of extra work that maybe not relate to the algorithm, such as configuring signal between hardware and software.
 
